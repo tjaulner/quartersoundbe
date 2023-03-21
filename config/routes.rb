@@ -27,6 +27,9 @@ Rails.application.routes.draw do
         get :me
         post :create
       end
+
+      #add resources for playlist
+      resources :playlists
     end
   end
 end

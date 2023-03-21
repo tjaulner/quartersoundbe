@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2021_11_22_185403) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_21_003610) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "playlists", force: :cascade do |t|
+    t.string "playlist_name"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_playlists_on_user_id"
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string "slug"
@@ -29,6 +37,20 @@ ActiveRecord::Schema[7.0].define(version: 2021_11_22_185403) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_tokens_on_user_id"
+  end
+
+  create_table "tracks", force: :cascade do |t|
+    t.string "artist"
+    t.string "trackname"
+    t.string "album"
+    t.integer "year"
+    t.string "genre"
+    t.string "play_preview_url"
+    t.string "album_img_url"
+    t.bigint "playlist_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["playlist_id"], name: "index_tracks_on_playlist_id"
   end
 
   create_table "user_roles", force: :cascade do |t|
@@ -54,7 +76,9 @@ ActiveRecord::Schema[7.0].define(version: 2021_11_22_185403) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "playlists", "users"
   add_foreign_key "tokens", "users"
+  add_foreign_key "tracks", "playlists"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
 end
