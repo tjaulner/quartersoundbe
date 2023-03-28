@@ -24,11 +24,16 @@ Rails.application.routes.draw do
       namespace :users do
         post :login
         delete :logout
-        get :me
+        get :me, :home
         post :create
       end
 
+      get '/users/:username', to: "users#show", constraints: {username: /.*/} # the constraints allows for . in username
+
       #add resources for playlist
+      namespace :playlists do
+        get :home
+      end
       resources :playlists
     end
   end

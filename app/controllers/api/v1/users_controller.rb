@@ -4,7 +4,7 @@ module Api
   module V1
     # Handles endpoints related to users
     class UsersController < Api::V1::ApplicationController
-      skip_before_action :authenticate, only: %i[login create]
+      skip_before_action :authenticate, only: %i[login create home show]
 
       def login
         result = BaseApi::Auth.login(params[:email], params[:password], @ip)
@@ -36,7 +36,17 @@ module Api
       end
 
       def me
-        render_success(payload: UserBlueprint.render_as_hash(@current_user), status: 200)
+        render_success(payload: {user: UserBlueprint.render_as_hash(@current_user)}, status: 200)
+      end
+
+      def home
+        render_success(payload: {suggested: UserBlueprint.render_as_hash(User.order("RANDOM()").limit(5))})
+      end
+
+      def show
+        user = User.find_by(username: params[:username])
+        
+        render_success(payload: {user: UserBlueprint.render_as_hash(user, view: :profile)})
       end
 
       def validate_invitation
