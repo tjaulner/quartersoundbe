@@ -44,9 +44,17 @@ module Api
       end
 
       def show
-        user = User.find_by(username: params[:username])
-        
+        user = User.find(params[:id]) #change back to :username if ID doesnt work for update
         render_success(payload: {user: UserBlueprint.render_as_hash(user, view: :profile)})
+      end
+
+      def edit
+        user = User.find(id: params[:id])
+      end
+
+      def update
+        user = User.find(params[:id]) #change this back to :username if by id doesnt work
+        user.update(user_params)
       end
 
       def validate_invitation
@@ -54,6 +62,16 @@ module Api
 
         render_error(errors: { validated: false, status: 401 }) and return if user.nil?
         render_success(payload: { validated: true, status: 200 })
+      end
+
+      private
+
+      def user_params
+        params.require(:user).permit(
+          :username,
+          :first_name,
+          :last_name
+        )
       end
     end
   end

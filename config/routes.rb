@@ -26,9 +26,13 @@ Rails.application.routes.draw do
         delete :logout
         get :me, :home
         post :create
+        put :update
       end
 
-      get '/users/:username', to: "users#show", constraints: {username: /.*/} # the constraints allows for . in username
+      get '/users/:id', to: "users#show" #constraints: {username: /.*/} # the constraints allows for . in username
+      put '/users/:id', to: "users#update"
+
+      resources :users, :only => [:update]
 
       #add resources for playlist
       namespace :playlists do
