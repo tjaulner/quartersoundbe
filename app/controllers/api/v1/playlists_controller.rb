@@ -56,6 +56,12 @@ module Api
                 render_success(payload: {suggested: PlaylistBlueprint.render_as_hash(Playlist.order("RANDOM()").limit(5))})
             end
 
+            
+
+           
+
+            
+
         end
     end
 end

@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      resources :tracks
+    end
+  end
+  resources :tracks
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   require 'sidekiq/web'
@@ -39,6 +45,11 @@ Rails.application.routes.draw do
         get :home
       end
       resources :playlists
+      
+      #tracks resources
+      resources :tracks
+
+      
     end
   end
 end
