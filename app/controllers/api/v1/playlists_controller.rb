@@ -1,7 +1,7 @@
 module Api
     module V1
         class PlaylistsController < Api::V1::ApplicationController
-            skip_before_action :authenticate, only: %i[home show]
+            skip_before_action :authenticate, only: %i[home show index]
             #playlist has a service wtih operations defined
             def create
                 result = Playlists::Operations.new_playlist(params, @current_user)

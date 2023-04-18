@@ -1,7 +1,7 @@
 module Api
   module V1
     class TracksController < Api::V1::ApplicationController
-      skip_before_action :authenticate, only: %i[show]
+      skip_before_action :authenticate, only: %i[show index]
 
       # GET all
       def index
