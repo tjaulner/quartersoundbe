@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_17_195113) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_18_204813) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "body"
+    t.integer "parent_id"
+    t.integer "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "playlists", force: :cascade do |t|
     t.string "playlist_name"
@@ -21,6 +30,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_195113) do
     t.datetime "updated_at", null: false
     t.string "about"
     t.index ["user_id"], name: "index_playlists_on_user_id"
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "body"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "roles", force: :cascade do |t|

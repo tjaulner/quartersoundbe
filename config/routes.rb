@@ -49,7 +49,8 @@ Rails.application.routes.draw do
       #tracks resources
       resources :tracks
 
-      
+      resources :posts
+      resources :comments
     end
   end
 end

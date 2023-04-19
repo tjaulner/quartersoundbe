@@ -27,6 +27,7 @@ class User < ApplicationRecord
   has_many :roles, through: :user_roles
   has_many :playlists
   has_many :tracks, through: :playlists
+  has_many :posts
 
   validates :email, uniqueness: true
 
