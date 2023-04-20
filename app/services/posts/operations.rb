@@ -12,7 +12,7 @@ module Posts
         def self.update_post(params)
             post = Post.find(params[:id])
             return ServiceContract.success(post) if post.update(
-                user_id: params[:user_id], 
+                #user_id: params[:user_id], 
                 body: params[:body])
 
             ServiceContract.error(post.errors.full_messages)

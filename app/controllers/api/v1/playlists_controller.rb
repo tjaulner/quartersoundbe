@@ -54,6 +54,7 @@ module Api
             # this method displays 5 random playlist on home page
             def home
                 render_success(payload: {suggested: PlaylistBlueprint.render_as_hash(Playlist.order("RANDOM()").limit(5))})
+
             end
 
             

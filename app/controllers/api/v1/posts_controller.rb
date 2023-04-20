@@ -6,6 +6,7 @@ module Api
         #get all
         def index
             posts = Post.all
+            posts = Post.all.order(created_at: :desc)
             payload = {
                 posts: PostBlueprint.render_as_hash(posts),
                 status: 200
@@ -18,7 +19,7 @@ module Api
             post = Post.find(params[:id])
 
             payload = {
-            post: PostBlueprint.render_as_hash(posts),
+            post: PostBlueprint.render_as_hash(post),
             status: 200
             }
             render_success(payload: payload)
@@ -36,7 +37,7 @@ module Api
         end
 
         def update
-            result = Posts::Operations.update_playlist(params)
+            result = Posts::Operations.update_post(params)
             render_error(errors: result.errors.all, status: 400) and return unless result.success?
             payload = {
                 post: PostBlueprint.render_as_hash(result.payload),
