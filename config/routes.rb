@@ -40,17 +40,29 @@ Rails.application.routes.draw do
 
       resources :users, :only => [:update]
 
+      resources :users do
+        resources :friendships, only: %i[create]
+      end
+
       #add resources for playlist
       namespace :playlists do
         get :home
       end
-      resources :playlists
+      resources :playlists do 
+        resources :likes, only: %i[create] #added for usage with "likes" on these models 4/21/23
+      end
       
       #tracks resources
-      resources :tracks
+      resources :tracks do
+        resources :likes, only: %i[create]
+      end
 
-      resources :posts
-      resources :comments
+      resources :posts do
+        resources :likes, only: %i[create]
+      end
+      resources :comments do
+        resources :likes, only: %i[create]
+      end
     end
   end
 end

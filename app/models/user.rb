@@ -28,6 +28,16 @@ class User < ApplicationRecord
   has_many :playlists
   has_many :tracks, through: :playlists
   has_many :posts
+  has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :friend_sent, class_name: 'Friendship', foreign_key: 'sent_by_id', inverse_of: 'sent_by', dependent: :destroy
+  has_many :friend_request, class_name: 'Friendship', foreign_key: 'sent_to_id', inverse_of: 'sent_to', dependent: :destroy
+  has_many :friends, -> {merge(Friendship.friends)}, through: :friend_sent, source: :sent_to
+  has_many :pending_requests, -> {merge(Friendship.not_friends)}, through: :friend_sent, source: :sent_to
+  has_many :received_requests, -> {merge(Friendship.not_friends)}, through: :friend_request, source: :sent_by
+  has_many :notifications, dependent: :destroy
+
+  has_one_attached :avatar
 
   validates :email, uniqueness: true
 
@@ -78,4 +88,23 @@ class User < ApplicationRecord
   def name
     "#{first_name} #{last_name}"
   end
+
+  #returns all post from this user's friends and self?
+  #update - likely scrap this, can control "post view" from the front end with ngIf.
+  def friends_and_own_posts
+    myfriends = friends #an array that is populated using has_many :friends association (returns records of users friends)
+    our_posts = []
+    myfriends.each do |f|
+      f.posts.each do |p|
+        our_posts << p
+      end
+    end
+    posts.each do |p|
+      our_posts << p
+    end
+    our_posts
+  end
+
+
+
 end

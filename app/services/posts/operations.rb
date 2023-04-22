@@ -17,5 +17,8 @@ module Posts
 
             ServiceContract.error(post.errors.full_messages)
         end
+        def self.see_posts(params, current_user)
+            our_post = current_user.friends_and_own_posts
+        end
     end
 end

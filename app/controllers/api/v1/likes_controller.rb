@@ -1,16 +1,14 @@
 module Api
     module V1
-      class PostsController < Api::V1::ApplicationController
+      class LikesController < Api::V1::ApplicationController
         skip_before_action :authenticate, only: %i[show index]
 
         #get all
         def index
-            #our_posts = current_user.friends_and_own_posts #added 4/21 for friends/self posts (see user model method)
-            #result = Posts::Operations.see_posts(params, @current_user)
-            posts = Post.all
-            posts = Post.all.order(created_at: :desc)
+            likes = Like.all
+            likes = Like.all.order(created_at: :desc)
             payload = {
-                posts: PostBlueprint.render_as_hash(posts),
+                likes: PostBlueprint.render_as_hash(posts),
                 status: 200
               }
               render_success(payload: payload)
@@ -18,10 +16,10 @@ module Api
 
         # GET singular
         def show
-            post = Post.find(params[:id])
+            like = Like.find(params[:id])
 
             payload = {
-            post: PostBlueprint.render_as_hash(post),
+            like: PostBlueprint.render_as_hash(like),
             status: 200
             }
             render_success(payload: payload)
@@ -29,30 +27,30 @@ module Api
 
         # POST /api/v1/posts
         def create
-            result = Posts::Operations.new_post(params, @current_user)
+            result = Likes::Operations.new_like(params, @current_user)
             render_error(errors: result.errors.all, status: 400) and return unless result.success?
             payload = {
-            post: PostBlueprint.render_as_hash(result.payload),
+            like: PostBlueprint.render_as_hash(result.payload),
             status: 201
             }
             render_success(payload: payload)
         end
 
         def update
-            result = Posts::Operations.update_post(params)
+            result = Likes::Operations.update_like(params)
             render_error(errors: result.errors.all, status: 400) and return unless result.success?
             payload = {
-                post: PostBlueprint.render_as_hash(result.payload),
+                like: PostBlueprint.render_as_hash(result.payload),
                 status: 201
             }
             render_success(payload: payload)
         end
 
         def destroy
-            post = Post.find(params[:id])
+            like = Like.find(params[:id])
 
-            post.destroy
-            render_success(payload: "Post has been deleted", status:200)
+            like.destroy
+            render_success(payload: "Like has been deleted", status:200)
         end
 
     end  

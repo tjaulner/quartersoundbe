@@ -70,7 +70,8 @@ module Api
         params.require(:user).permit(
           :username,
           :first_name,
-          :last_name
+          :last_name,
+          :avatar
         )
       end
     end

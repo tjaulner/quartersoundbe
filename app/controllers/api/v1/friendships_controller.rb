@@ -1,13 +1,13 @@
 module Api
     module V1
-      class CommentsController < Api::V1::ApplicationController
+      class FriendshipsController < Api::V1::ApplicationController
         skip_before_action :authenticate, only: %i[show index]
 
         #get all
         def index
-            comments = Comment.all
+            friendships = Friendship.all
             payload = {
-                comments: CommentBlueprint.render_as_hash(comments),
+                friendships: FriendshipBlueprint.render_as_hash(posts),
                 status: 200
               }
               render_success(payload: payload)
@@ -15,35 +15,33 @@ module Api
 
         # GET singular
         def show
-            comment = Comment.find(params[:id])
+            friendship = Friendship.find(params[:id])
 
             payload = {
-            comment: CommentBlueprint.render_as_hash(comments),
+            friendship: FriendshipBlueprint.render_as_hash(like),
             status: 200
             }
             render_success(payload: payload)
         end
 
-        # POST /api/v1/comments
+        # POST /api/v1/posts
         def create
-            result = Comments::Operations.new_comment(params, @current_user, @post, @playlist)
+            result = Friendships::Operations.new_friendship(params, @current_user)
             render_error(errors: result.errors.all, status: 400) and return unless result.success?
             payload = {
-            comment: CommentBlueprint.render_as_hash(result.payload),
+            friendship: FriendshipBlueprint.render_as_hash(result.payload),
             status: 201
             }
             render_success(payload: payload)
         end
 
         def destroy
-            comment = Comment.find(params[:id])
+            friendship = Friendship.find(params[:id])
 
-            comment.destroy
-            render_success(payload: "Comment has been deleted", status:200)
+            friendship.destroy
+            render_success(payload: "Friendship has been deleted", status:200)
         end
 
     end  
     end
 end
-
-

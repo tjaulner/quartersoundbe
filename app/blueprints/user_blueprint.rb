@@ -3,7 +3,7 @@
 # Defines the JSON blueprint for the User model
 class UserBlueprint < Blueprinter::Base
   identifier :id
-  fields :first_name, :last_name, :name, :email, :username; :playlists
+  fields :first_name, :last_name, :name, :email, :username, :playlists, :avatar
 
   view :login do
     association :token, blueprint: TokenBlueprint do |user, _options|
@@ -12,7 +12,7 @@ class UserBlueprint < Blueprinter::Base
   end
 
   view :normal do
-    fields :first_name, :last_name, :name, :email, :playlists
+    fields :first_name, :last_name, :name, :email, :playlists, :avatar
   end
 
   #adding view for profile to see playlists (?) 03/27/23
