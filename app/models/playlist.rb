@@ -1,6 +1,6 @@
 class Playlist < ApplicationRecord
   belongs_to :user
-  has_many :tracks
+  has_many :tracks, dependent: :destroy
 
   has_many :likes, dependent: :destroy
 

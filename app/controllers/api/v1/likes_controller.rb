@@ -27,10 +27,10 @@ module Api
 
         # POST /api/v1/posts
         def create
-            result = Likes::Operations.new_like(params, @current_user)
+            result = Likes::Operations.new_like(params, @current_user, @post, @comment, @playlist)
             render_error(errors: result.errors.all, status: 400) and return unless result.success?
             payload = {
-            like: PostBlueprint.render_as_hash(result.payload),
+            like: LikeBlueprint.render_as_hash(result.payload),
             status: 201
             }
             render_success(payload: payload)
