@@ -36,6 +36,7 @@ class User < ApplicationRecord
   has_many :pending_requests, -> {merge(Friendship.not_friends)}, through: :friend_sent, source: :sent_to
   has_many :received_requests, -> {merge(Friendship.not_friends)}, through: :friend_request, source: :sent_by
   has_many :notifications, dependent: :destroy
+  has_many :replies, dependent: :destroy
 
   has_one_attached :avatar
 

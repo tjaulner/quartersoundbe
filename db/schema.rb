@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_21_205548) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_26_230707) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,6 +99,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_21_205548) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "replies", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "comment_id", null: false
+    t.string "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_replies_on_comment_id"
+    t.index ["user_id"], name: "index_replies_on_user_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "slug"
     t.datetime "created_at", null: false
@@ -164,6 +174,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_21_205548) do
   add_foreign_key "likes", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "playlists", "users"
+  add_foreign_key "replies", "comments"
+  add_foreign_key "replies", "users"
   add_foreign_key "tokens", "users"
   add_foreign_key "tracks", "playlists"
   add_foreign_key "user_roles", "roles"
