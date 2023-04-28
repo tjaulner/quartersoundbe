@@ -63,7 +63,10 @@ Rails.application.routes.draw do
       resources :comments do
         resources :likes, only: %i[create]
       end
-      resources :replies
+      resources :replies do
+        resources :likes, only: %i[create]
+      end
+      
     end
   end
 end
